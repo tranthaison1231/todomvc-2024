@@ -17,21 +17,39 @@ function getCountLeft() {
 
 input.onkeyup = (e) => {
   if (e.key === "Enter") {
-    list.innerHTML += `<li class="p-[15px] border-b border-[#ededed] flex items-center group">
-          <div data-todo="toggle" class="mr-[15px] rounded-full size-10 border flex justify-center items-center">
-            <svg class="hidden text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-          </div>
-          ${input.value}
-          <svg data-todo="delete" class="ml-auto cursor-pointer hidden group-hover:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </li>`;
+    const newItem = `<li class="p-[15px] border-b border-[#ededed] flex items-center group">
+      <div data-todo="toggle" class="mr-[15px] rounded-full size-10 border flex justify-center items-center">
+        <svg class="hidden text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      ${input.value}
+      <svg data-todo="delete" class="ml-auto cursor-pointer hidden group-hover:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </li>`;
+
+    list.innerHTML += newItem;
     input.value = "";
   }
   if (list.children.length > 0) {
-    toggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-chevron-down">
-          <path d="m6 9 6 6 6-6" />
-        </svg>`;
+    const toggleAllEl = `<svg id="toggle-all" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="lucide lucide-chevron-down">
+      <path d="m6 9 6 6 6-6" />
+    </svg>`;
+
+    toggle.innerHTML = toggleAllEl;
+
+    const toggleAll = document.getElementById("toggle-all");
+
+    toggleAll.onclick = () => {
+      for (const el of list.children) {
+        if (!el.classList.contains("line-through")) {
+          el.classList.add("line-through");
+          el.querySelector("div").classList.add("border-green-500");
+          el.querySelector("svg").classList.remove("hidden");
+        }
+      }
+      counter.innerHTML = `${getCountLeft()} item left`;
+    };
+
     input.classList.remove(["shadow-2xl"]);
     footer.classList.remove(["hidden"]);
   }
@@ -55,8 +73,17 @@ list.onclick = (e) => {
 
 const renderApp = () => {
   const hash = window.location.hash;
+  const filter = document.getElementById("filter");
 
-  console.log(hash);
+  for (const el of filter.children) {
+    if (el.matches(`[href="${hash}"]`)) {
+      el.classList.add("border");
+    } else {
+      el.classList.remove("border");
+    }
+  }
 };
 
 renderApp();
+
+window.addEventListener("hashchange", renderApp);
