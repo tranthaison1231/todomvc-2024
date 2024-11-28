@@ -1,5 +1,3 @@
-import React from "react";
-
 export function Footer() {
   return (
     <footer className="text-[11px] mt-[65px] text-center text-[#4d4d4d] dark:text-white font-light">

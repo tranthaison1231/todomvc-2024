@@ -1,5 +1,3 @@
-import React from "react";
-
 export function Header() {
   return (
     <div className="fixed right-5 top-5 cursor-pointer" id="toggle-theme">

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { createRoot } from "react-dom/client";
 import { Header } from "./shared/ui/Header";
 import { Footer } from "./shared/ui/Footer";
